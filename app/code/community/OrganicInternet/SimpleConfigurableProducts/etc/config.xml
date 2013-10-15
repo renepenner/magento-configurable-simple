@@ -101,6 +101,17 @@
                 </rewrite>
             </rss>
         </blocks>
+        <catalog>
+            <product>
+                <type>
+                    <configurable>
+                        <allow_product_types>
+                            <giftcard />
+                        </allow_product_types>
+                    </configurable>
+                </type>
+            </product>
+        </catalog>
     </global>
     <frontend>
         <layout>
