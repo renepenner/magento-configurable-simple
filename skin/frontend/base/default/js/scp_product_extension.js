@@ -162,7 +162,12 @@ Product.Config.prototype.reloadPrice = function() {
         optionsPrice.productPriceBeforeRedemptions = finalPrice;
         optionsPrice.productOldPrice = price;
         optionsPrice.reload();
-        optionsPrice.reloadPriceLabels(true);
+        if (typeof childProducts[childProductId]['minAmount'] != 'undefined' && typeof childProducts[childProductId]['maxAmount'] != undefined
+            && childProducts[childProductId]['minAmount'] < childProducts[childProductId]['maxAmount']) {
+            optionsPrice.reloadPriceLabels(false);
+        } else {
+            optionsPrice.reloadPriceLabels(true);
+        }
         optionsPrice.updateSpecialPriceDisplay(price, finalPrice);
         this.updateProductShortDescription(childProductId);
         this.updateProductDescription(childProductId);

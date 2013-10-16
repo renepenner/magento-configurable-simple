@@ -17,6 +17,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice())),
                 "sku" => $product->getSku(),
             );
+            
+            $priceModel = $product->getPriceModel();
+            if (is_callable(array($priceModel, 'getMinAmount')) && is_callable(array ($priceModel, 'getMaxAmount'))) {
+                $childProducts[$productId]['minAmount'] = $priceModel->getMinAmount($product);
+                $childProducts[$productId]['maxAmount'] = $priceModel->getMaxAmount($product);
+            }
 
             if (Mage::getStoreConfig('SCP_options/product_page/change_name')) {
                 $childProducts[$productId]["productName"] = $product->getName();
