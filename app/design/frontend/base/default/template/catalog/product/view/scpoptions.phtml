@@ -136,21 +136,23 @@ if (count($_options) || $this->getProduct()->isConfigurable()):
         },
         attachGiftCardPriceListener : function() {
             var gcSelect = $('giftcard_amount');
-            gcSelect.observe('change', function(event) {
-                var gcSelect = Event.element(event);
-                var price = gcSelect.getValue();
-                if (price == '') {
-                    price = gcSelect.options[1].value;
-                    optionsPrice.reloadPriceLabels(false);
-                } else {
-                    optionsPrice.reloadPriceLabels(true);
-                }
-                try {
-                    optionsPrice.productPrice = price;
-                    optionsPrice.reload();
-                } catch (e) {
-                }
-            });
+            if (gcSelect) {
+                gcSelect.observe('change', function(event) {
+                    var gcSelect = Event.element(event);
+                    var price = gcSelect.getValue();
+                    if (price == '') {
+                        price = gcSelect.options[1].value;
+                        optionsPrice.reloadPriceLabels(false);
+                    } else {
+                        optionsPrice.reloadPriceLabels(true);
+                    }
+                    try {
+                        optionsPrice.productPrice = price;
+                        optionsPrice.reload();
+                    } catch (e) {
+                    }
+                });
+            }
         }
     }
     function validateOptionsCallback(elmId, result){

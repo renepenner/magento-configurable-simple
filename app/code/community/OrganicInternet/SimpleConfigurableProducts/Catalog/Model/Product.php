@@ -14,7 +14,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Product
             return parent::getMaxPrice();
         }
     }
-    
+
+    /**
+     * Returns the minimum giftcard_amount, rather that the product's getPrice().
+     * This is because giftcards don't have a base price set, and we need to return something useful to display "Price from..." etc.
+     * 
+     * @return float
+     */
     public function getPrice() {
         $price = parent::getPrice();
         if (Enterprise_GiftCard_Model_Catalog_Product_Type_Giftcard::TYPE_GIFTCARD === $this->getTypeId()

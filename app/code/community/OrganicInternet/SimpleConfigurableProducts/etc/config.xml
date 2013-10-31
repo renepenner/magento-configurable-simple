@@ -60,6 +60,7 @@
             <enterprise_giftcard>
                 <rewrite>
                     <catalog_product_price_giftcard>OrganicInternet_SimpleConfigurableProducts_GiftCard_Model_Catalog_Product_Price_Giftcard</catalog_product_price_giftcard>
+                    <catalog_product_price_giftcard>OrganicInternet_SimpleConfigurableProducts_Model_GiftCard_Catalog_Product_Price_Giftcard</catalog_product_price_giftcard>
                 </rewrite>
             </enterprise_giftcard>
         </models>
