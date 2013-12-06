@@ -237,10 +237,10 @@ Product.Config.prototype.updateProductName = function(productId) {
     var productName = this.config.productName;
     if (productId && this.config.childProducts[productId].productName) {
         productName = this.config.childProducts[productId].productName;
+        $$('#product_addtocart_form div.product-name h1').each(function(el) {
+            el.innerHTML = productName;
+        });
     }
-    $$('#product_addtocart_form div.product-name h1').each(function(el) {
-        el.innerHTML = productName;
-    });
 };
 
 Product.Config.prototype.updateProductShortDescription = function(productId) {
