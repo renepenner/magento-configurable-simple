@@ -5,6 +5,6 @@
   "homepage":"https://github.com/aligent/magento-configurable-simple",
   "description":"Enhancement to Magento to allow simple product prices to be used instead of the default special-case configurable product prices",
   "require":{
-      "magento-hackathon/magento-composer-installer":"*",
+      "magento-hackathon/magento-composer-installer":"*"
   }
 }
