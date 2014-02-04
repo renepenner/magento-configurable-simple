@@ -1,0 +1,10 @@
+{
+  "name":"organicinternet/simpleconfigurableproducts",
+  "type":"magento-module",
+  "license":"OSL-3.0",
+  "homepage":"https://github.com/aligent/magento-configurable-simple",
+  "description":"Enhancement to Magento to allow simple product prices to be used instead of the default special-case configurable product prices",
+  "require":{
+      "magento-hackathon/magento-composer-installer":"*",
+  }
+}
