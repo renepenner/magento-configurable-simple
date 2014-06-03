@@ -332,6 +332,8 @@ Product.Config.prototype.showCustomOptionsBlock = function(productId, parentId) 
               //prodForm.getElements().each(function(el) {el.enable()});
           }
         });
+
+        document.fire("scp:simpleChanged", {productId: productId, parentId: parentId});
     } else {
         $('SCPcustomOptionsDiv').innerHTML = '';
         try{window.opConfig = new Product.Options([]);} catch(e){}
@@ -413,10 +415,18 @@ Product.Config.prototype.configureElement = function(element) {
             this.fillSelect(element.nextSetting);
             this.reloadOptionLabels(element.nextSetting);
             this.resetChildren(element.nextSetting);
+
+            var attributeId = element.nextSetting.id.replace(/[a-z]*/, '');
+            document.fire('scp:optionsChanged', {attributeId: attributeId});
         }
     }
     else {
         this.resetChildren(element);
+
+        for(var i=0;i<element.childSettings.length;i++){
+            var attributeId = element.childSettings[i].id.replace(/[a-z]*/, '');
+            document.fire('scp:optionsChanged', {attributeId: attributeId});
+        }
     }
     this.reloadPrice();
 };
@@ -429,7 +439,7 @@ Product.Config.prototype.reloadOptionLabels = function(element){
     
     try {
         //Don't update elements that have a selected option
-        if(element.options[element.selectedIndex].config){
+        if (element.selectedIndex > 0 && element.options[element.selectedIndex].config) {
             return;
         }
     } catch(e){}
@@ -443,6 +453,8 @@ Product.Config.prototype.reloadOptionLabels = function(element){
             element.options[i].text = this.getOptionLabel(element.options[i].config, cheapestFinalPrice, mostExpensiveFinalPrice);
         }
     }
+
+    document.fire('scp:optionsReloaded', {element: element});
 };
 
 //SCP: Changed label formatting to show absolute price ranges rather than price differentials
