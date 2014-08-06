@@ -13,6 +13,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         foreach ($this->getAllowProducts() as $product) {
             $productId  = $product->getId();
             $childProducts[$productId] = array(
+                "name" => $product->getName(),
                 "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
                 "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice())),
                 "sku" => $product->getSku(),
@@ -56,11 +57,17 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
 
             #if image changing is enabled..
             if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
-                #but dont bother if fancy image changing is enabled
-                if (!Mage::getStoreConfig('SCP_options/product_page/change_image_fancy')) {
-                    #If image is not placeholder...
-                    if($product->getImage()!=='no_selection') {
-                        $childProducts[$productId]["imageUrl"] = (string)Mage::helper('catalog/image')->init($product, 'image');
+                #If image is not placeholder...
+                if($product->getImage()!=='no_selection') {
+                    $productMag = Mage::getModel('catalog/product')->load($productId);
+                    $childProducts[$productId]["imageUrl"][] = (string)Mage::helper('catalog/image')->init($productMag, 'image');
+                }
+
+                //Add Parent Images for use in Galleria
+                $config['parentImages'] = Array();
+                foreach($this->getProduct()->getMediaGalleryImages() as $parentImage) {
+                    if(!in_array($parentImage->getUrl(), $config['parentImages'])) {
+                        $config['parentImages'][] = $parentImage->getUrl();
                     }
                 }
             }
@@ -95,7 +102,10 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
         $config['shortDescription'] = $this->helper('catalog/output')->productAttribute($p, nl2br($p->getShortDescription()), 'short_description');
 
         if (Mage::getStoreConfig('SCP_options/product_page/change_image')) {
-            $config["imageUrl"] = (string)Mage::helper('catalog/image')->init($p, 'image');
+            //$config["imageUrl"] = (string)Mage::helper('catalog/image')->init($p, 'image');
+            foreach($p->getMediaGalleryImages() as $image) {
+                $config["imageUrl"][] = (string)Mage::helper('catalog/image')->init($p, 'image', $image->getFile());
+            }
         }
 
         $childBlock = $this->getLayout()->createBlock('catalog/product_view_attributes');
