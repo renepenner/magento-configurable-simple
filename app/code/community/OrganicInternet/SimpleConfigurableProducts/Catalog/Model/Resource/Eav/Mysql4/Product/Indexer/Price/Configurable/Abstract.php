@@ -1,10 +1,12 @@
 <?php
 
+if (class_exists('Innoexts_Warehouse_Model_Mysql4_Catalog_Product_Indexer_Price_Configurable')) {
 /**
+ * This class extends InnoExts Multiwarehouse if it's being used.  If so, the stock_id column added by the
+ * multiwarehouse module is also included in the index.
+ *
  * Class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable_Abstract
  */
-
-if (class_exists('Innoexts_Warehouse_Model_Mysql4_Catalog_Product_Indexer_Price_Configurable')) {
 class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysql4_Product_Indexer_Price_Configurable_Abstract
     extends Innoexts_Warehouse_Model_Mysql4_Catalog_Product_Indexer_Price_Configurable
 {
@@ -22,7 +24,7 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'base_tier',
             'group_price',
             'base_group_price',
-            'stock_id',
+            'stock_id', // Extra field introduced by InnoExts Multiwarehouse
             #'child_entity_id'
         );
     }
@@ -41,11 +43,12 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Model_Resource_Eav_Mysq
             'base_tier'         => new Zend_Db_Expr('pi.tier_price'),
             'group_price'       => new Zend_Db_Expr('pi.group_price'),
             'base_group_price'  => new Zend_Db_Expr('pi.group_price'),
-            'stock_id'      => new Zend_Db_Expr('cis.stock_id')
+            'stock_id'      => new Zend_Db_Expr('cis.stock_id') // Extra field introduced by InnoExts Multiwarehouse
         );
     }
 
     protected function getGroupBy() {
+        // stock_id column must be included here to so that a record is created for each stock_id
         return array('inner.entity_id', 'inner.customer_group_id', 'inner.website_id','inner.stock_id');
     }
 }
