@@ -66,9 +66,10 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 //Add Parent Images for use in Galleria
                 $config['parentImages'] = Array();
                 foreach($this->getProduct()->getMediaGalleryImages() as $parentImage) {
-                    if(!in_array($parentImage->getUrl(), $config['parentImages'])) {
-                        $config['parentImages'][] = $parentImage->getUrl();
-                    }
+                    $config['parentImages'][] = Mage::helper('catalog/image')
+                        ->init($this->getProduct(), 'image', $parentImage->getFile())
+                        ->keepAspectRatio(true)->keepFrame(false)
+                        ->resize(750, null);
                 }
             }
         }
