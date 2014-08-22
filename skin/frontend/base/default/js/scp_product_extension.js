@@ -523,7 +523,7 @@ document.observe("dom:loaded", function() {
     //Really only needs to be the first element that has configureElement set on it,
     //rather than all.
     $('product_addtocart_form').getElements().each(function(el) {
-        if(el.type == 'select-one') {
+        if(el.type == 'select-one' && el.hasClassName('super-attribute-select')) {
             if(el.options && (el.options.length > 1)) {
                 el.options[0].selected = true;
                 spConfig.reloadOptionLabels(el);
