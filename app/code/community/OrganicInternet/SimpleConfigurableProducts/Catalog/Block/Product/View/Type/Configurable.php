@@ -60,13 +60,13 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
                 #If image is not placeholder...
                 if($product->getImage()!=='no_selection') {
                     $productMag = Mage::getModel('catalog/product')->load($productId);
-                    $childProducts[$productId]["imageUrl"][] = (string)Mage::helper('catalog/image')->init($productMag, 'image');
+                    $childProducts[$productId]["imageUrl"][] = (string) Mage::helper('catalog/image')->init($productMag, 'image');
                 }
 
                 //Add Parent Images for use in Galleria
                 $config['parentImages'] = Array();
                 foreach($this->getProduct()->getMediaGalleryImages() as $parentImage) {
-                    $config['parentImages'][] = Mage::helper('catalog/image')
+                    $config['parentImages'][] = (string) Mage::helper('catalog/image')
                         ->init($this->getProduct(), 'image', $parentImage->getFile())
                         ->keepAspectRatio(true)->keepFrame(false)
                         ->resize(750, null);
