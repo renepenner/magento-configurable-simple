@@ -158,7 +158,8 @@ Product.Config.prototype.reloadPrice = function() {
     if(childProductId){
         var price = childProducts[childProductId]["price"];
         var finalPrice = childProducts[childProductId]["finalPrice"];
-        optionsPrice.productPrice = finalPrice;
+        var msrpPrice = childProducts[childProductId]["msrp"];
+		optionsPrice.productPrice = finalPrice;
         optionsPrice.productPriceBeforeRedemptions = finalPrice;
         optionsPrice.productOldPrice = price;
         optionsPrice.reload();
@@ -173,7 +174,8 @@ Product.Config.prototype.reloadPrice = function() {
         this.updateFormProductId(childProductId);
         this.addParentProductIdToCartForm(this.config.productId);
         this.showCustomOptionsBlock(childProductId, this.config.productId);
-        if (usingZoomer) {
+        this.updateProductMsrp(childProductId, optionsPrice);
+		if (usingZoomer) {
             this.showFullImageDiv(childProductId, this.config.productId);
         }else{
             this.updateProductImage(childProductId);
@@ -196,6 +198,7 @@ Product.Config.prototype.reloadPrice = function() {
         this.updateProductSku(false);
         this.updateProductAttributes(false);
         this.showCustomOptionsBlock(false, false);
+		this.updateProductMsrp(cheapestPid, optionsPrice);
         if (usingZoomer) {
             this.showFullImageDiv(false, false);
         }else{
@@ -204,7 +207,15 @@ Product.Config.prototype.reloadPrice = function() {
     }
 };
 
-
+Product.Config.prototype.updateProductMsrp = function(productId, optionsPrice) {
+    var productMsrp = this.config.Msrp;
+    if (productId && this.config.childProducts[productId].msrp) {
+        productMsrp = this.config.childProducts[productId].msrp;
+    }
+    $$('.msrp-price .price').each(function(el) {
+        el.innerHTML = optionsPrice.formatPrice(productMsrp);
+    });
+};
 
 Product.Config.prototype.updateProductImage = function(productId) {
     var imageUrl = this.config.imageUrl;

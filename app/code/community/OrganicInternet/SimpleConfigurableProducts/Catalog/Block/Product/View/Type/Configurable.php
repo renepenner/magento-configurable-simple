@@ -9,13 +9,22 @@ class OrganicInternet_SimpleConfigurableProducts_Catalog_Block_Product_View_Type
 
         $childProducts = array();
 
+		$p = $this->getProduct();
         //Create the extra price and tier price data/html we need.
         foreach ($this->getAllowProducts() as $product) {
             $productId  = $product->getId();
+			if($p->getData('msrp')){
+				$msrpPrice = $p->getData('msrp');
+			}elseif($p->getData('msrp_factor')){
+				$msrpPrice = round( ($p->getData('msrp_factor') * $product->getPrice()) / 10) * 10;
+			}else{
+				$msrpPrice = 0;
+			}
             $childProducts[$productId] = array(
                 "price" => $this->_registerJsPrice($this->_convertPrice($product->getPrice())),
                 "finalPrice" => $this->_registerJsPrice($this->_convertPrice($product->getFinalPrice())),
                 "sku" => $product->getSku(),
+				"msrp" =>  $this->_registerJsPrice( $this->_convertPrice( $msrpPrice ) )
             );
 
             if (Mage::getStoreConfig('SCP_options/product_page/change_name')) {
